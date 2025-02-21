@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  customerID    Int      @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  customerPhone String
+  CustomerEmail String   @unique // ตรวจสอบว่ามี @unique attribute หรือไม่
+  password      String
+  cusCreatedAt  DateTime @default(now())
+  reservations  Reservations[]
+}
+
+model Tables {
+  tabID       Int           @id @default(autoincrement())
+  tabTypes    String
+  tabStatus   String?
+  tabCreatedAt DateTime @default(dbgenerated("CURRENT_TIMESTAMP"))
+  reservations Reservations[]
+  orders       Orders[]
+}
+
+model Reservations {
+  resID          Int      @id @default(autoincrement())
+  resName        String
+  resDate        String
+  resTime        String
+  numberOfPeople Int
+  resStatus      String?
+  resCreatedAt   DateTime @default(now())
+  customer       Customer @relation(fields: [Customer_customerID], references: [customerID])
+  table         Tables   @relation(fields: [Tables_tabID], references: [tabID])
+  Customer_customerID Int
+  Tables_tabID Int
+}
+
+model Employee {
+  empID        Int           @id @default(autoincrement())
+  empFname     String
+  empLname     String
+  empPhone     String
+  position     String
+  salary       Float
+  orders       Orders[]
+  stockIns     Stock_In[]
+  timeScription TimeScription[]
+}
+
+model Orders {
+  orderID      Int           @id @default(autoincrement())
+  orderStatus  String?
+  orderCreatedAt DateTime      @default(now())
+  table        Tables        @relation(fields: [Tables_tabID], references: [tabID])
+  employee     Employee      @relation(fields: [Employee_empID], references: [empID])
+  orderItems   orderItem[]
+  bill         Bill?
+  Tables_tabID  Int
+  Employee_empID Int
+}
+
+model BuffetTypes {
+  buffetTypeID   Int           @id @default(autoincrement())
+  buffetTypePrice Int
+  buffetTypesName String        @unique
+  menuItems      MenuItems[]
+}
+
+model MenuItems {
+  menuItemsID     Int           @id @default(autoincrement())
+  menuItemNameTHA String
+  menuItemNameENG String
+  menuItemsPrice  Int
+  itemImage       String
+  description     String?
+  menuItemCreateAt DateTime      @default(now())
+  category        String
+  buffetType      BuffetTypes   @relation(fields: [BuffetTypes_buffetTypeID], references: [buffetTypeID])
+  orderItems      orderItem[]
+  BuffetTypes_buffetTypeID Int
+}
+
+model orderItem {
+  Orders_orderID    Int
+  MenuItems_menuItemsID Int
+  Quantity         Int
+  order           Orders    @relation(fields: [Orders_orderID], references: [orderID])
+  menuItem        MenuItems @relation(fields: [MenuItems_menuItemsID], references: [menuItemsID])
+
+  @@id([Orders_orderID, MenuItems_menuItemsID])
+}
+
+model Bill {
+  billID        Int      @id @default(autoincrement())
+  vat           Int
+  paymentStatus String?
+  netAmount     Float
+  grandTotal    Float
+  discount      Float?
+  totalAmount   Float
+  billCreateAt  DateTime @default(now())
+  billStatus    String
+  Orders_orderID Int      @unique // เพิ่ม @unique ตรงนี้
+  order         Orders   @relation(fields: [Orders_orderID], references: [orderID]) //เปลี่ยนจาก Orders เป็น Orders_orderID
+  payment       Payment?
+}
+
+model Payment {
+  paymentID     Int      @id @default(autoincrement())
+  paymentTypes  String?
+  totalAmount   Float
+  Bill_billID   Int      @unique // เพิ่ม @unique ตรงนี้
+  bill          Bill   @relation(fields: [Bill_billID], references: [billID])//เปลี่ยนจาก Bill เป็น Bill_billID
+}
+
+model Stock {
+  stockID        Int      @id @default(autoincrement())
+  ingredientName String   @unique
+  costPrice      Float
+  Unit           String
+  Quantity       Float    @default(0)
+  LastUpdated    DateTime @default(now())
+  timeScription  TimeScription[]
+  stockInDetail  Stock_In_Detail[]
+}
+
+model TimeScription {
+  Employee_empID Int
+  Stock_stockID  Int
+  tsCreatedAt    DateTime? @default(now())
+  Unit           String?
+  Quantity       Float?
+  employee       Employee @relation(fields: [Employee_empID], references: [empID])
+  stock         Stock      @relation(fields: [Stock_stockID], references: [stockID])
+
+  @@id([Employee_empID, Stock_stockID])
+}
+
+model Stock_In {
+  stockInID      Int      @id @default(autoincrement())
+  stockInDateTime DateTime @default(now())
+  totalPrice     Float
+  employee       Employee @relation(fields: [Employee_empID], references: [empID])
+  stockInDetail  Stock_In_Detail[]
+  Employee_empID Int
+}
+
+model Stock_In_Detail {
+  stockInDetailID Int      @id @default(autoincrement())
+  stockIn        Stock_In @relation(fields: [Stock_In_stockInID], references: [stockInID])
+  stock          Stock      @relation(fields: [Stock_stockID], references: [stockID])
+  ingredientName String
+  quantity       Float
+  unit          String
+  pricePerUnit  Float
+  totalPrice    Float
+  Stock_In_stockInID Int
+  Stock_stockID Int
+}
