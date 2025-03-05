@@ -46,8 +46,4 @@ export async function PATCH(req: Request, { params }: { params: { tabID: string 
   } finally {
     await prisma.$disconnect();
   }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
