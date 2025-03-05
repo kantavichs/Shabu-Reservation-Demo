@@ -1,3 +1,5 @@
+// File: app/lib/utils.ts
+
 // Example function to verify JWT token
 import { verify } from 'jsonwebtoken';
 

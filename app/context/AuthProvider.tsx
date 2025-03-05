@@ -1,3 +1,5 @@
+// File: app/context/AuthProvider.tsx
+
 "use client";
 
 import { AuthProvider } from '../context/AuthContext';

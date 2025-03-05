@@ -1,22 +1,194 @@
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f9fafb; /* Light gray */
+  --foreground: #374151; /* Dark gray */
+  --primary: #2563eb; /* Blue */
+  --secondary: #6b7280; /* Medium gray */
+  --accent: #eab308; /* Yellow */
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
 }
 
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary); /* Use primary color for headings */
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--secondary);
+}
+
+
+/* Buttons */
+button,
+.button {
+    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+/* Forms */
+/* globals.css */
+
+/* Forms */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mb-2;
+}
+
+/* Tables */
+table {
+  @apply min-w-full leading-normal;
+}
+
+th {
+  @apply px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+}
+
+td {
+  @apply px-5 py-5 border-b border-gray-200 bg-white text-sm;
+}
+
+/* Navbar */
+nav {
+  @apply bg-gray-800 p-4 text-white;
+}
+
+nav a {
+  @apply text-white hover:text-gray-300;
+}
+
+/* Container */
+.container {
+  @apply mx-auto max-w-7xl;
+}
+
+/* Layout */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.grid-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+/* Additional Utilities */
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+/* Confirm Dialog */
+.confirm-dialog {
+    @apply fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full;
+}
+
+.confirm-dialog-content {
+    @apply relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white;
+}
+
+.confirm-dialog-buttons {
+    @apply items-center px-4 py-3;
+}
+
+/* Table Management */
+.table-management-container {
+  @apply container mx-auto p-4;
+}
+
+.table-grid {
+  @apply grid grid-cols-4 gap-4;
+}
+
+.table-image {
+  @apply w-full h-auto;
+}
+
+.table-actions-select {
+  @apply shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* globals.css */
+
+/* Form styling */
+form {
+  @apply space-y-4;
+}
+
+form label {
+  @apply block text-gray-700 text-sm font-bold mb-2;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="tel"],
+form input[type="number"],
+form input[type="date"],
+form select,
+form textarea {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+form button {
+  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Reservation History */
+.reservation-history-container {
+    @apply container mx-auto p-4;
+}
+
+.reservation-history-table {
+    @apply min-w-full leading-normal;
+}
+
+/* Reservation History Table Headers */
+.reservation-history-table thead th {
+    @apply px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider;
+}
+
+/* Reservation History Table Data Cells */
+.reservation-history-table tbody td {
+    @apply px-5 py-5 border-b border-gray-200 bg-white text-sm;
+}

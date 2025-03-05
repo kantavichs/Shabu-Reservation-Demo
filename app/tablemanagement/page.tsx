@@ -1,3 +1,5 @@
+// File: app/tablemanagement/page.tsx
+
 "use client";
 
 import Navbar from '../components/Navbar';

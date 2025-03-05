@@ -1,4 +1,5 @@
-// app/components/ConfirmDialog.tsx
+// File: app/components/ConfirmDialog.tsx
+
 interface ConfirmDialogProps {
     isOpen: boolean;
     message: string;

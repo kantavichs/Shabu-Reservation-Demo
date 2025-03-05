@@ -1,4 +1,5 @@
-// app/reservation/page.tsx
+// File: app/reservationhistory/page.tsx
+
 "use client";
 
 import Navbar from '../components/Navbar';

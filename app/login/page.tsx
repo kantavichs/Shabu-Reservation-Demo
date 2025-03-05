@@ -1,3 +1,5 @@
+// File: app/login/page.tsx
+
 "use client";
 
 import { useState } from 'react';
@@ -6,14 +8,13 @@ import { useAuth } from '@/app/context/AuthContext';
 import Navbar from '@/app/components/Navbar';
 
 // Function to safely parse JSON
-// Function to safely parse JSON
-async function safeJsonParse(str:string) {
-  try {
-      return JSON.parse(str);
-  } catch (e) {
-      console.error("safeJsonParse", e);
-      return false;
-  }
+async function safeJsonParse(str: string) {
+    try {
+        return JSON.parse(str);
+    } catch (e) {
+        console.error("safeJsonParse", e);
+        return false;
+    }
 }
 
 const LoginPage = () => {
@@ -39,18 +40,16 @@ const LoginPage = () => {
             // 2. Handle Response Status
             if (response.ok) {
                 // 3. Parse Response Body
-                const responseBody = await response.text(); // Get the response body as text
+                 const data = await response.json();
+                 const userData = {
+                  customerID: data.customerID,
+                  firstName: data.firstName,
+                  lastName: data.lastName,
+                  CustomerEmail: data.CustomerEmail,
+                  token: data.token, // Assuming the API returns a token
+                };
 
-                const data = await safeJsonParse(responseBody); // Then parse it safely
-
-                // If parsing fails, handle it and exit
-                if (!data) {
-                    setError("Failed to parse login response");
-                    return;
-                }
-
-                // 4. Handle Successful Login
-                login(data.user);
+                login(userData);
                 router.push('/reservation');
             } else {
                 // 5. Handle Unsuccessful Login

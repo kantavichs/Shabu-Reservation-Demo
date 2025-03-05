@@ -1,9 +1,10 @@
-// app/reservation/page.tsx
+// File: app/reservation/page.tsx
+
 "use client";
 
 import Navbar from '../components/Navbar';
 import ReservationForm from '../components/ReservationForm';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -12,13 +13,19 @@ const ReservationPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('User:', user); // Log user object
-    console.log('Is Loading:', isLoading); // Log isLoading value
+    console.log('ReservationPage: User:', user); // Log user object
+    console.log('ReservationPage: Is Loading:', isLoading); // Log isLoading value
 
     if (!isLoading) {
+      console.log("ReservationPage: isLoading is false")
       if (!user) {
+        console.log("ReservationPage: No user, redirecting to /login");
         router.push('/login');
+      } else{
+         console.log("ReservationPage: User found: " + JSON.stringify(user));
       }
+    } else {
+        console.log("ReservationPage: still loading. Please wait.");
     }
   }, [user, isLoading, router]);
 
@@ -28,6 +35,7 @@ const ReservationPage = () => {
 
   // If user is null, then return null
   if (!user) {
+    console.log("ReservationPage: User is null after isLoading check, rendering null");
     return null;
   }
 

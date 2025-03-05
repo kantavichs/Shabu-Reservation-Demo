@@ -1,3 +1,5 @@
+// File: app/page.tsx
+
 import Navbar from './components/Navbar';
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';

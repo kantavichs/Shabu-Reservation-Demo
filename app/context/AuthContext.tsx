@@ -1,14 +1,16 @@
+// File: app/context/AuthContext.tsx
+
 "use client";
 
 import { createContext, useState, useEffect, useContext, PropsWithChildren } from 'react';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 interface User {
     customerID: number;
     firstName: string;
     lastName: string;
     CustomerEmail: string;
+    token: string;
 }
 
 interface AuthContextType {
@@ -33,30 +35,31 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const storedUser = Cookies.get('user');
-        console.log('Stored User:', storedUser); // Log storedUser value
+        const storedUser = localStorage.getItem('user');
+        console.log('Stored User from localStorage:', storedUser);
+
         if (storedUser) {
             try {
-                setUser(JSON.parse(storedUser));
+                const parsedUser = JSON.parse(storedUser);
+                setUser(parsedUser);
             } catch (error) {
-                console.error('Error parsing stored user:', error);
-                // Handle parsing error (e.g., clear cookie)
-                Cookies.remove('user');
+                console.error('Error parsing stored user from localStorage:', error);
+                localStorage.removeItem('user'); // Clear invalid data
             }
         }
         setIsLoading(false);
     }, []);
 
     const login = (userData: User) => {
+        console.log("Saving user to localStorage: " + JSON.stringify(userData));
         setUser(userData);
-        Cookies.set('user', JSON.stringify(userData));
-        console.log("userData after login "+userData);
+        localStorage.setItem('user', JSON.stringify(userData));
         router.push('/');
     };
 
     const logout = () => {
         setUser(null);
-        Cookies.remove('user');
+        localStorage.removeItem('user');
         router.push('/login');
     };
 

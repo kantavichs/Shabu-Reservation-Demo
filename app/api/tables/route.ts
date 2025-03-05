@@ -1,3 +1,7 @@
+// File: app/api/tables/route.ts
+
+//app\api\tables\route.ts
+
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
@@ -42,4 +46,8 @@ export async function PATCH(req: Request, { params }: { params: { tabID: string 
   } finally {
     await prisma.$disconnect();
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

@@ -1,3 +1,5 @@
+// File: app/components/AuthProvider.tsx
+
 "use client";
 
 import { createContext, useState, useEffect, useContext, PropsWithChildren } from 'react';
@@ -9,6 +11,7 @@ interface User {
     firstName: string;
     lastName: string;
     CustomerEmail: string;
+    token: string; // Add the token property
 }
 
 interface AuthContextType {
@@ -34,15 +37,29 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     useEffect(() => {
         const storedUser = Cookies.get('user');
+        console.log('Stored User:', storedUser); // Log the value of storedUser
+    
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            try {
+                const parsedUser = JSON.parse(storedUser);
+                console.log('Parsed User:', parsedUser); // Log the parsed user object
+                setUser(parsedUser);
+            } catch (error: any) {
+                console.error('Error parsing stored user:', error);
+                console.error('Raw cookie value:', storedUser); // Log the raw cookie value
+    
+                // Handle parsing error (e.g., clear cookie)
+                Cookies.remove('user');
+            }
         }
         setIsLoading(false);
     }, []);
 
     const login = (userData: User) => {
-        setUser(userData);
-        Cookies.set('user', JSON.stringify(userData));
+        console.log("Saving user to localStorage: " + JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);  // Set state *before* navigating
+    
         router.push('/');
     };
 

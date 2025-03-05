@@ -1,4 +1,5 @@
-// app/components/ReservationHistory.tsx
+// File: app/components/ReservationHistory.tsx
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -13,7 +14,8 @@ interface Reservation {
     numberOfPeople: number;
     resStatus: string;
     Tables_tabID: number;
-     resCreatedAt: Date; //changed to date
+    resCreatedAt: string; // Date to String
+    resCustomerPhone: string; // Added customerPhone
 }
 
 const ReservationHistory = () => {
@@ -23,7 +25,9 @@ const ReservationHistory = () => {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await fetch(`/api/reservations?customerId=${user?.customerID}`);
+                const url = `/api/reservations/getbycustomer?customerId=${user?.customerID}`;
+            console.log("Fetching reservations from:", url); // Log the URL
+                const response = await fetch(`/api/reservations/getbycustomer?customerId=${user?.customerID}`);  //<---- CHANGED URL
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -89,7 +93,7 @@ const ReservationHistory = () => {
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Status
                                 </th>
-                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Created At
                                 </th>
                                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -107,17 +111,17 @@ const ReservationHistory = () => {
                                         {reservation.Tables_tabID}
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        {reservation.resDate}
+                                        {reservation.resDate}  {/* Directly Display */}
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        {reservation.resTime}
+                                        {reservation.resTime}  {/* Directly Display */}
                                     </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         {reservation.resStatus}
                                     </td>
-                                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                          {moment.utc(reservation.resCreatedAt).tz('Asia/Bangkok').format('DD/MM/YYYY HH:mm:ss')}
-                                      </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        {moment(reservation.resCreatedAt).format('DD/MM/YYYY HH:mm:ss')}
+                                    </td>
                                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         {reservation.resStatus === 'pending' && (
                                             <button

@@ -1,3 +1,5 @@
+// File: prisma\schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -39,6 +41,9 @@ model Reservations {
   table         Tables   @relation(fields: [Tables_tabID], references: [tabID])
   Customer_customerID Int
   Tables_tabID Int
+  deletedAt      DateTime?
+  tempToken      TempToken?
+  resCustomerPhone String? // New field
 }
 
 model Employee {
@@ -162,4 +167,13 @@ model Stock_In_Detail {
   totalPrice    Float
   Stock_In_stockInID Int
   Stock_stockID Int
+}
+
+model TempToken {
+    id        Int      @id @default(autoincrement())
+    resID     Int      @unique
+    token     String   @unique
+    createdAt DateTime @default(now())
+    expiresAt DateTime // Add an expiration time to the token
+    reservation Reservations @relation(fields: [resID], references: [resID])
 }

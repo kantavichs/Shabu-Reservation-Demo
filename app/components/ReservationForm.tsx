@@ -1,8 +1,11 @@
+// File: app/components/ReservationForm.tsx
+
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
+import moment from 'moment-timezone';
 
 interface Table {
     tabID: number;
@@ -13,7 +16,7 @@ interface Table {
 const ReservationForm = () => {
     const [tables, setTables] = useState<Table[]>([]);
     const [resName, setResName] = useState('');
-    const [customerPhone, setCustomerPhone] = useState('');
+    const [resCustomerPhone, setResCustomerPhone] = useState(''); //CHANGED
     const [numberOfPeople, setNumberOfPeople] = useState(1);
     const [tabID, setTabID] = useState('');
     const [resDate, setResDate] = useState('');
@@ -71,16 +74,22 @@ const ReservationForm = () => {
 
         const params = new URLSearchParams({
             resName: resName,
-            customerPhone: customerPhone,
+            resCustomerPhone: resCustomerPhone,
             numberOfPeople: String(numberOfPeople),
             tabID: tabID,
-            resDate: resDate,
-            resTime: resTime,
+            resDate: resDate, // Send Date String
+            resTime: resTime, // Send Time String
             Customer_customerID: String(user?.customerID),
+            user: JSON.stringify(user)
         });
 
         router.push(`/reservationsummary?${params.toString()}`);
     };
+
+    //Date time from the user, is local time
+const thaiTimeZone = 'Asia/Bangkok';
+
+       
 
     return (
         <div className="container mx-auto p-4">
@@ -98,13 +107,13 @@ const ReservationForm = () => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="customerPhone" className="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
+                    <label htmlFor="resCustomerPhone" className="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
                     <input
                         type="tel"
-                        id="customerPhone"
+                        id="resCustomerPhone" //CHANGED
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        value={customerPhone}
-                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        value={resCustomerPhone} //CHANGED
+                        onChange={(e) => setResCustomerPhone(e.target.value)} //CHANGED
                         required
                     />
                 </div>
