@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
-=======
 // File: app/api/auth/login/route.ts
 
->>>>>>> Stashed changes
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
@@ -52,10 +49,7 @@ export async function POST(req: Request) {
       return new NextResponse(JSON.stringify({ message: 'Invalid Credentials' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
     }
 
-<<<<<<< Updated upstream
-=======
         // app\api\auth\login\route.ts
->>>>>>> Stashed changes
     // Create JWT Token
     console.log('Creating JWT token...');
     const token = sign(
@@ -73,9 +67,6 @@ export async function POST(req: Request) {
 
     // Return user and token
     console.log('Returning user and token...');
-<<<<<<< Updated upstream
-    return new NextResponse(JSON.stringify({ user, token }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-=======
     const res = {
       customerID: user.customerID,
       firstName: user.firstName,
@@ -90,7 +81,6 @@ export async function POST(req: Request) {
             'Content-Type': 'application/json'
         },
     });
->>>>>>> Stashed changes
 
   } catch (error: any) {
     console.error('Login error:', error);
@@ -98,8 +88,4 @@ export async function POST(req: Request) {
   } finally {
     await prisma.$disconnect();
   }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
